@@ -40,14 +40,24 @@ female("Karen Mayes").
 female("Ruth Mayes").
 female("Emily Hawkins").
 
-son(X, Y)               :- parent(Y, X), male(X).
-daughter(X, Y)          :- parent(Y, X), female(X).
+son(A, B)               :- parent(B, A), male(A).
+daughter(A, B)          :- parent(B, A), female(A).
 
-father(X, Y)            :- parent(X, Y), male(X).
-mother(X, Y)            :- parent(X, Y), female(X).
+father(A, B)            :- parent(A, B), male(A).
+mother(A, B)            :- parent(A, B), female(A).
 
-grandfather(X, Z)       :- father(X, Y), father(Y, Z); father(X, Y), mother(Y, Z).
-grandmother(X, Z)       :- mother(X, Y), father(Y, Z); mother(X, Y), mother(Y, Z).
+grandfather(A, C)       :- father(A, B), father(B, C); father(A, B), mother(B, C).
+grandmother(A, C)       :- mother(A, B), father(B, C); mother(A, B), mother(B, C).
 
-greatgrandfather(X, Z)  :- grandfather(X, Y), father(Y, Z); grandfather(X, Y), mother(Y, Z).
-greatgrandmother(X, Z)  :- grandmother(X, Y), father(Y, Z); grandmother(X, Y), mother(Y, Z).
+greatgrandfather(A, C)  :- grandfather(A, B), father(B, C); grandfather(A, B), mother(B, C).
+greatgrandmother(A, C)  :- grandmother(A, B), father(B, C); grandmother(A, B), mother(B, C).
+
+sibling(A, B)           :- parent(C, A), parent(C, B), A \= B.
+
+brother(A, B)           :- sibling(A, B), male(A).
+sister(A, B)            :- sibling(A, B), female(A).
+
+uncle(A, C)             :- brother(A, B), parent(B, C).
+aunt(A, C)              :- sister(A, B), parent(B, C).
+
+cousin(A, B)            :- parent(C, A), uncle(C, B); parent(C, A), aunt(C, B).
