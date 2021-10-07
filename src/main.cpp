@@ -91,7 +91,7 @@ bool bidirectional_search(const string &, const string &);
 pair<const string, search_function> search_functions[] = {
         { "Поиск в глубину", depth_first_search },
         { "Поиск в ширину", breadth_first_search },
-//        { "Поиск с итеративным углублением", iterative_depth_first_search },
+        { "Поиск с итеративным углублением", iterative_depth_first_search },
         { "Двунаправленный поиск", bidirectional_search }
 };
 
@@ -154,10 +154,32 @@ bool breadth_first_search(const string &a, const string &b) {
 }
 
 bool depth_limited_search(const string &a, const string &b, const int limit) {
+    if (limit == 0) return false;
+    // make current vertex as visited
+    visited[a] = true;
+    // recur for all the vertices adjacent to this vertex
+    for (auto i = adj[a].begin(); i != adj[a].end(); i++) {
+        const string s = i->first;
+        // if an adjacent has not been visited
+        if (!visited[s]) {
+            lhs[s] = a;
+            if (depth_limited_search(s, b, limit - 1) || s == b) {
+                return true; // path successfully found
+            }
+        }
+    }
     return false;
 }
 
 bool iterative_depth_first_search(const string &a, const string &b) {
+    for (int i = 1; i < adj.size(); i++) {
+        // clear the visited lists
+        visited.clear();
+        //
+        if (depth_limited_search(a, b, i)) {
+            return true;
+        }
+    }
     return false;
 }
 
