@@ -5,10 +5,11 @@ using namespace std;
 typedef bool (*search_function)(const string &, const string &);
 
 map<const string, vector<pair<const string, const int>>> adj;
+map<const string, int> paths;
 map<const string, string> lhs, rhs;
 map<const string, bool> visited, wisited;
 
-void load_data(const string &path) {
+void load_cities(const string &path) {
     string u, v;        // first city(u), second city(v)
     int w;              // distance between 'u' and 'v'
     fstream file(path); // create a file stream
@@ -17,6 +18,17 @@ void load_data(const string &path) {
             // add new edge to the adjacency list
             adj[u].push_back(make_pair(v, w));
             adj[v].push_back(make_pair(u, w));
+        }
+    }
+}
+
+void load_paths(const string &path) {
+    string city;
+    int len;
+    fstream file(path); // create a file stream
+    if (file.is_open()) {
+        while (file >> city >> len) {
+            paths[city] = len;
         }
     }
 }
@@ -97,7 +109,8 @@ pair<const string, search_function> search_functions[] = {
 
 int main() {
     // loading adjacency list of cities
-    load_data("cities.data");
+    load_cities("cities.data");
+    load_paths("paths.data");
     // calculate a number of the search functions
     int n = sizeof(search_functions) / sizeof(search_functions[0]);
     // find a path from "С.Петербург" to "Житомир"
