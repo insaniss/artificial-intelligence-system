@@ -269,7 +269,33 @@ bool best_first_search(const string &a, const string &b) {
     return false;
 }
 
-bool a_star_search(const string &, const string &) {
-    // TODO implement
+bool a_star_search(const string &a, const string &b) {
+    map<const string, int> weight;
+    // create min-priority-queue of pairs of (weight, vertex)
+    using pair = pair<int, string>;
+    priority_queue<pair, vector<pair>, greater<pair>> que;
+    // push a pair of weight & vertex to the priority-queue
+    que.push(make_pair(weight[a] + paths[a], a));
+    // make current vertex as visited
+    visited[a] = true;
+    while (!que.empty()) {
+        // dequeue a vertex from queue
+        const string u = que.top().second;
+        que.pop();
+        // path successfully found
+        if (u == b) { return true; }
+        // recur for all the vertices adjacent to this vertex
+        for (auto i = adj[u].begin(); i != adj[u].end(); i++) {
+            const string v = i->first;
+            const int w = i->second;
+            if (!visited[v]) { // if vertex is not visited
+                visited[v] = true; // mark it visited
+                lhs[v] = u;
+                weight[v] = weight[u] + w; // calculate weight of the vertex
+                // add a new pair of weight and vertex to the queue
+                que.push(make_pair(weight[v] + paths[v], v));
+            }
+        }
+    }
     return false;
 }
