@@ -156,6 +156,8 @@ bool breadth_first_search(const string &a, const string &b) {
         // dequeue a vertex from queue
         const string u = que.front();
         que.pop();
+        // path successfully found
+        if (u == b) { return true; }
         // get all adjacent vertices of the dequeued vertex u
         for (auto i = adj[u].begin(); i != adj[u].end(); i++) {
             const string v = i->first;
@@ -166,8 +168,6 @@ bool breadth_first_search(const string &a, const string &b) {
                 que.push(v);       // enqueue it
             }
         }
-        // path successfully found
-        if (u == b) { return true; }
     }
     return false;
 }
