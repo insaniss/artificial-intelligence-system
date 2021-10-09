@@ -100,11 +100,16 @@ bool depth_limited_search(const string &, const string &, const int);
 bool iterative_depth_first_search(const string &, const string &);
 bool bidirectional_search(const string &, const string &);
 
+bool best_first_search(const string &, const string &);
+bool a_star_search(const string &, const string &);
+
 pair<const string, search_function> search_functions[] = {
         { "Поиск в глубину", depth_first_search },
         { "Поиск в ширину", breadth_first_search },
         { "Поиск с итеративным углублением", iterative_depth_first_search },
-        { "Двунаправленный поиск", bidirectional_search }
+        { "Двунаправленный поиск", bidirectional_search },
+        { "Поиск по первому наилучшему соответствию", best_first_search },
+        { "Поиск методом минимизации суммарной оценки", a_star_search }
 };
 
 int main() {
@@ -123,6 +128,7 @@ int main() {
 }
 
 bool depth_first_search(const string &a, const string &b) {
+    if (a == b) { return true; }
     // make current vertex as visited
     visited[a] = true;
     // recur for all the vertices adjacent to this vertex
@@ -131,7 +137,7 @@ bool depth_first_search(const string &a, const string &b) {
         // if an adjacent has not been visited
         if (!visited[s]) {
             lhs[s] = a;
-            if (depth_first_search(s, b) || s == b) {
+            if (depth_first_search(s, b)) {
                 return true; // path successfully found
             }
         }
@@ -161,13 +167,14 @@ bool breadth_first_search(const string &a, const string &b) {
             }
         }
         // path successfully found
-        if (u == b) return true;
+        if (u == b) { return true; }
     }
     return false;
 }
 
 bool depth_limited_search(const string &a, const string &b, const int limit) {
-    if (limit == 0) return false;
+    if (a == b) { return true; }
+    if (limit == 0) { return false; }
     // make current vertex as visited
     visited[a] = true;
     // recur for all the vertices adjacent to this vertex
@@ -176,7 +183,7 @@ bool depth_limited_search(const string &a, const string &b, const int limit) {
         // if an adjacent has not been visited
         if (!visited[s]) {
             lhs[s] = a;
-            if (depth_limited_search(s, b, limit - 1) || s == b) {
+            if (depth_limited_search(s, b, limit - 1)) {
                 return true; // path successfully found
             }
         }
@@ -188,7 +195,6 @@ bool iterative_depth_first_search(const string &a, const string &b) {
     for (int i = 1; i < adj.size(); i++) {
         // clear the visited lists
         visited.clear();
-        //
         if (depth_limited_search(a, b, i)) {
             return true;
         }
@@ -233,7 +239,37 @@ bool bidirectional_search(const string &a, const string &b) {
             }
         }
         // path successfully found
-        if (intersection().first) return true;
+        if (intersection().first) { return true; }
     }
+    return false;
+}
+
+bool best_first_search(const string &a, const string &b) {
+    if (a == b) { return true; }
+    // make current vertex as visited
+    visited[a] = true;
+    // recur for all the vertices adjacent to this vertex
+    for (auto i = adj[a].begin(); i != adj[a].end(); i++) {
+        string u = i->first;
+        for (auto j = adj[a].begin(); j != adj[a].end(); j++) {
+            const string v = j->first;
+            // if an adjacent has not been visited and u.path > v.path
+            if (!visited[v] && paths[u] > paths[v]) {
+                u = v;
+            }
+        }
+        // if an adjacent has not been visited
+        if (!visited[u]) {
+            lhs[u] = a;
+            if (best_first_search(u, b)) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+bool a_star_search(const string &, const string &) {
+    // TODO implement
     return false;
 }
