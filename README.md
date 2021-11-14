@@ -1,5 +1,2 @@
-## Лабораторная работа №3
+## Лабораторная работа №4
 
-<ins>Генеалогическое дерево на *Protege*:</ins>
-
-![genealogical-tree](docs/png/family-tree-diagram-example.png)
