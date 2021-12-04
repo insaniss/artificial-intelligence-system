@@ -35,12 +35,12 @@ Part 2 represent recognition of simple images for making following work.
 
 Data usage represented at https://keras.io/datasets/ and depends on variant.
 
-| Var   | Part-1 func                            | Part-2 data        | Hyperparameters                                 |
-| :---: | :---                                   | :---               | :--                                             |
-| 1     | Absolute(Sin(x)) X: 6,3..6.3 Y: 0..1.2 | CIFAR10            | Layers count, neurons count per layer           |
-| 2     | Cos(x) X: -9..9 Y: -1..1               | CIFAR100           | Learn rate, regularization L1                   |
-| 3     | Absolute(Sin(x)) X: 6,3..6.3 Y: 0..1.2 | Handwritten digits | Regularization L2, output layer activation type |
-| 4     | Cos(x) X: -9..9 Y: -1..1               | Fashion articles   | Layer activation type, loss function type       |
+| Var   | Part-1 func                             | Part-2 data        | Hyperparameters                                 |
+| :---: | :---                                    | :---               | :--                                             |
+| 1     | Absolute(Sin(x)) X: -6,3..6,3 Y: 0..1,2 | CIFAR10            | Layers count, neurons count per layer           |
+| 2     | Cos(x) X: -9..9 Y: -1..1                | CIFAR100           | Learn rate, regularization L1                   |
+| 3     | Absolute(Sin(x)) X: -6,3..6,3 Y: 0..1,2 | Handwritten digits | Regularization L2, output layer activation type |
+| 4     | Cos(x) X: -9..9 Y: -1..1                | Fashion articles   | Layer activation type, loss function type       |
 
 There are represented such hyperparameters as
 
